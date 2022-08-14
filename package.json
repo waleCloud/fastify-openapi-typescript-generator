@@ -42,11 +42,15 @@
     "eslint-plugin-prettier": "^4.0.0",
     "mocha": "^10.0.0",
     "mocha-junit-reporter": "^2.0.2",
+    "openapi-types": "^12.0.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "dependencies": {
+    "@quinck/collections": "0.0.7"
+  }
 }
