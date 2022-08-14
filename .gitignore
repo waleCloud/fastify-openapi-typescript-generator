@@ -848,3 +848,6 @@ lib/
 
 # Test results
 test-results.xml
+
+# Local
+local/
