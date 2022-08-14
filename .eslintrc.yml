@@ -27,7 +27,7 @@ rules:
         - 'FunctionExpression > .params > :matches(Decorator, :not(:first-child))' # No indent for decorators in Functions
         - 'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key' # No indent for decorators in Class members
   quotes:
-    - error
+    - warn
     - single
   semi:
     - error
