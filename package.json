@@ -51,6 +51,7 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "@quinck/collections": "0.0.7"
+    "@quinck/collections": "0.0.7",
+    "yaml": "^2.1.1"
   }
 }
