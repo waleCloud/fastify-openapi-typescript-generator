@@ -55,6 +55,10 @@
   "dependencies": {
     "@quinck/collections": "0.0.7",
     "fastify": "^4.4.0",
+    "openapi-typescript-codegen": "^0.23.0",
     "yaml": "^2.1.1"
+  },
+  "bin": {
+    "openapi_generate": "./lib/bin/generate-handlers.js"
   }
 }
