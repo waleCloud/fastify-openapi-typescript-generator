@@ -3,10 +3,10 @@ import { OpenApiVersion } from './openapi-version-verifier.models'
 
 export class OpenApiVersionVerifier {
     getOpenApiVersion(openapi: OpenAPIVX): OpenApiVersion {
-        const { version } = openapi.info
+        const version = openapi.openapi
 
         const avaliableVersion = Object.values(OpenApiVersion).find(
-            availableVersion => availableVersion === version,
+            availableVersion => version.startsWith(availableVersion),
         )
 
         if (avaliableVersion != undefined) return avaliableVersion
