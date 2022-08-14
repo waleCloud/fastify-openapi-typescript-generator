@@ -3,8 +3,10 @@ import { OpenAPIVX } from '../utils/types'
 
 export class OpenapiParser {
     parseOpeanpi(openapiFileContent: string): OpenAPIVX {
-        if (yaml.isDocument(openapiFileContent))
+        try {
+            return JSON.parse(openapiFileContent)
+        } catch {
             return yaml.parse(openapiFileContent)
-        return JSON.parse(openapiFileContent)
+        }
     }
 }
