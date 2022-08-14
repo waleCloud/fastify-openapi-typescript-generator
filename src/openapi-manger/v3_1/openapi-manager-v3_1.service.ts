@@ -1,6 +1,7 @@
 import { OpenapiManager } from '../openapi-manager.models'
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { AnyObjectType, RouteTypeTag } from '../../utils/types'
+import '@quinck/collections'
 
 export class OpenApiManagerV3_1
     implements OpenapiManager<OpenAPIV3_1.Document>
