@@ -54,7 +54,9 @@
   ],
   "dependencies": {
     "@quinck/collections": "0.0.7",
+    "commander": "^9.4.0",
     "fastify": "^4.4.0",
+    "joi": "^17.6.0",
     "openapi-typescript-codegen": "^0.23.0",
     "yaml": "^2.1.1"
   },
