@@ -47,9 +47,9 @@ export class HandlersGenerator {
             typeof summary == 'string'
         )
             return `
-    /**
-     * ${summary}
-     */`
+  /**
+   * ${summary}
+   */`
 
         return ''
     }
