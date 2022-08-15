@@ -83,11 +83,12 @@ ${routeGenricDefinition}
         operationId: string,
     ): string {
         const routeProp = this.getRouteGenericProp(tag)
-        return `\t\t${routeProp}: ${openapiSchemasImportName}.${operationId}${tag}`
+        return `\t\t\t${routeProp}: ${openapiSchemasImportName}.${operationId}${tag}`
     }
 
     private getRouteGenericString(operationId: string): string {
-        return `RouteHandlerMethod<RawServerDefault,
+        return `RouteHandlerMethod<
+    RawServerDefault,
     RawRequestDefaultExpression<RawServerDefault>,
     RawReplyDefaultExpression<RawServerDefault>,
     ${this.getRouteGeneric(operationId)}
