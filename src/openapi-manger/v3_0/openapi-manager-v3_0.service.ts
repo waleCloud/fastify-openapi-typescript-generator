@@ -2,6 +2,7 @@ import { OpenapiManager } from '../openapi-manager.models'
 import { OpenAPIV3 } from 'openapi-types'
 import { AnyObjectType, RouteTypeTag } from '../../utils/types'
 import '@quinck/collections'
+import { defaultObject, nullObject } from './openapi-manager-v3_0.consts'
 
 export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
     generateOpenapiWithRoutesSchemas(
@@ -21,11 +22,6 @@ export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
                     method => path[method] as OpenAPIV3.OperationObject,
                 ),
             )
-
-        const defaultOpenapiParamsObjectSchema: OpenAPIV3.SchemaObject = {
-            type: 'object',
-            additionalProperties: false,
-        }
 
         function referenceToDesiredObject<T extends AnyObjectType>(
             componentName: keyof OpenAPIV3.ComponentsObject,
@@ -73,11 +69,6 @@ export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
             )
         }
 
-        const defaultObject: OpenAPIV3.SchemaObject = {
-            type: 'object',
-            additionalProperties: false,
-        }
-
         function paramsToSchema(
             params?: OpenAPIV3.ParameterObject[],
         ): OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject {
@@ -94,7 +85,7 @@ export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
                             | OpenAPIV3.SchemaObject,
                 )
                 const result = {
-                    ...defaultOpenapiParamsObjectSchema,
+                    ...defaultObject,
                     properties,
                 }
                 if (required.length > 0) result.required = required
@@ -158,7 +149,7 @@ export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
                                     mediaObject => mediaObject.schema,
                                 )
                             }
-                            return []
+                            return [nullObject]
                         })
                         .singleCollect(
                             schema => schema != undefined,
