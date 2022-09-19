@@ -1,4 +1,4 @@
-import { OpenAPIV3_1, OpenAPIV3 } from 'openapi-types'
+import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 export type OpenAPIVX = OpenAPIV3_1.Document | OpenAPIV3.Document
 
@@ -15,6 +15,7 @@ export enum RouteTypeTag {
     QueryParams = 'QueryParams',
     RequestBody = 'RequestBody',
     ReplyBody = 'ReplyBody',
+    Headers = 'Headers',
 }
 
 export type AnyObjectType =
