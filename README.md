@@ -11,7 +11,7 @@ The tests are going to be implemented soon.
 
 ## Usage
 ```sh
-openapi --help
+openapi_generate --help
 
   Usage: openapi [options]
 
