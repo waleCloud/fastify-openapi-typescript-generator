@@ -1,7 +1,7 @@
 import { OpenAPIVX } from '../../utils/types'
 
 export type SchemasGeneratorParameters = {
-    readonly openapi: OpenAPIVX
+    readonly openapi: OpenAPIVX | string
     readonly outputDirectory: string
 }
 
