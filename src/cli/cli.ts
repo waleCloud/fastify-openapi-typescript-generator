@@ -1,3 +1,4 @@
+import { routesOptionsGenerator } from '../commands/generate-routes/generate-routes-options.factory'
 import { openapiSchemasGenerator } from '../commands/generate-schemas/generate-schemas.factory'
 import { cliCommands } from './commands/commands'
 import { CommandsHandler } from './commands/commands.models'
@@ -12,6 +13,11 @@ export const runCli = async () => {
 
     cliCommands({
         onGenerateSchemasComand,
+        onGenerateRoutesOptionsComand: ({ input, output }) =>
+            routesOptionsGenerator({
+                openapi: input,
+                outputDirectory: output,
+            }).generateRoutesOptions(),
         onGenerateHandlersCommand: () => Promise.resolve(),
     })
 }

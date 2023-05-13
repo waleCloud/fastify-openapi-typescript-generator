@@ -19,6 +19,10 @@ export function cliCommands(handler: CommandsHandler): void {
         options => handler.onGenerateHandlersCommand(options),
     )
 
+    withDefaults(program.command(CommandName.GENERATE_ROUTES_OPTIONS)).action(
+        options => handler.onGenerateRoutesOptionsComand(options),
+    )
+
     withDefaults(program.command(CommandName.GENERATE_HANDLERS)).action(
         options => handler.onGenerateHandlersCommand(options),
     )
