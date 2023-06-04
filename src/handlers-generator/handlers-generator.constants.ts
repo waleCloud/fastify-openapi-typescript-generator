@@ -1,6 +1,8 @@
-import { RouteTypeTag } from '../utils/types.js'
+import { OpenAPIV3 } from 'openapi-types'
 
 export const openapiOperationsImportName = 'operations'
+
+export const methods = Object.values(OpenAPIV3.HttpMethods)
 
 export const openapiOperationsImport = (module: string) =>
     `import { ${openapiOperationsImportName} } from '${module}'`
@@ -18,5 +20,3 @@ export const valueOfType = 'type ValueOf<T> = T[keyof T]'
 
 export const handlersInterfacePrefix = 'export interface Handlers {'
 export const handlersInterfacePostfix = '}'
-
-export const routeTypeTags = Object.values(RouteTypeTag)
