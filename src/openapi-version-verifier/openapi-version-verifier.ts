@@ -1,5 +1,5 @@
-import { OpenAPIVX } from '../utils/types'
-import { OpenApiVersion } from './openapi-version-verifier.models'
+import { OpenAPIVX } from '../utils/types.js'
+import { OpenApiVersion } from './openapi-version-verifier.models.js'
 
 export class OpenApiVersionVerifier {
     getOpenApiVersion(openapi: OpenAPIVX): OpenApiVersion {

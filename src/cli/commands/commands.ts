@@ -1,5 +1,5 @@
 import { Command, program } from 'commander'
-import { CommandName, CommandsHandler } from './commands.models'
+import { CommandName, CommandsHandler } from './commands.models.js'
 
 const withDefaults = (program: Command): Command =>
     program

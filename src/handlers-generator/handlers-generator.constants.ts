@@ -1,13 +1,9 @@
-import { RouteTypeTag } from '../utils/types'
+import { RouteTypeTag } from '../utils/types.js'
 
-export const disableLinter = `/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-`
+export const openapiOperationsImportName = 'operations'
 
-export const openapiSchemasImportName = 'openapi'
-
-export const openapiSchemasImport = `import * as ${openapiSchemasImportName} from './index'`
+export const openapiOperationsImport = (module: string) =>
+    `import { ${openapiOperationsImportName} } from '${module}'`
 
 export const fastifyImports = `
 import {
@@ -17,6 +13,8 @@ import {
   RouteHandlerMethod,
 } from "fastify"
 `
+
+export const valueOfType = 'type ValueOf<T> = T[keyof T]'
 
 export const handlersInterfacePrefix = 'export interface Handlers {'
 export const handlersInterfacePostfix = '}'

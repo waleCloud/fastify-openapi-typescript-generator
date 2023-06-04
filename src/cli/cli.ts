@@ -1,23 +1,19 @@
-import { routesOptionsGenerator } from '../commands/generate-routes/generate-routes-options.factory'
-import { openapiSchemasGenerator } from '../commands/generate-schemas/generate-schemas.factory'
-import { cliCommands } from './commands/commands'
-import { CommandsHandler } from './commands/commands.models'
+import { program } from 'commander'
+import { generateComponentsFromOpenapi } from '../openapi-generator/openapi-generator.js'
+import { DefaultCommandParamaters } from './commands/commands.models.js'
 
 export const runCli = async () => {
-    const onGenerateSchemasComand: CommandsHandler['onGenerateSchemasComand'] =
-        ({ input, output }) =>
-            openapiSchemasGenerator({
-                openapi: input,
-                outputDirectory: output,
-            }).generateSchemas()
-
-    cliCommands({
-        onGenerateSchemasComand,
-        onGenerateRoutesOptionsComand: ({ input, output }) =>
-            routesOptionsGenerator({
-                openapi: input,
-                outputDirectory: output,
-            }).generateRoutesOptions(),
-        onGenerateHandlersCommand: () => Promise.resolve(),
-    })
+    program
+        .name('openapi-first')
+        .description('CLI to generate code from openapi')
+        .version('1.0.0')
+        .requiredOption(
+            '-i, --input <value>',
+            'OpenAPI specification path, can be both yaml or json (required)',
+        )
+        .requiredOption('-o, --output <value>', 'Output directory (required)')
+        .action(async options => {
+            const { input, output } = options as DefaultCommandParamaters
+            await generateComponentsFromOpenapi(output, input)
+        })
 }

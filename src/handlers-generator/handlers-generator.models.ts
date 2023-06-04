@@ -1,4 +1,4 @@
-import { RouteGenericInterface } from 'fastify/types/route'
+import { RouteGenericInterface } from 'fastify/types/route.js'
 
 export type RouteGenericPropertyName = keyof RouteGenericInterface
 
