@@ -21,6 +21,7 @@ program
     .action(async options => {
         const { input, output } = options as DefaultCommandParamaters
         const pwd = process.cwd()
+        console.log(pwd)
         await generateComponentsFromOpenapi(
             path.join(pwd, output),
             path.join(pwd, input),
