@@ -6,6 +6,7 @@
   "types": "lib/index.d.ts",
   "type": "module",
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "build": "tsc",
@@ -31,7 +32,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/Quinck/fastify-openapi-typescript-generator#readme",
   "devDependencies": {
-    "@tsconfig/node18": "^2.0.1",
+    "@tsconfig/node16": "^1.0.4",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.16.16",
@@ -45,6 +46,7 @@
     "mocha": "^10.0.0",
     "mocha-junit-reporter": "^2.0.2",
     "openapi-types": "^12.1.0",
+    "patch-package": "^7.0.0",
     "prettier": "^2.7.1",
     "typescript": "^5.1.3"
   },
@@ -54,9 +56,11 @@
   "dependencies": {
     "@quinck/openapi-typescript": "^6.2.1-2",
     "commander": "^10.0.1",
+    "fastify-openapi-glue": "^4.1.4",
     "yaml": "^2.2.2"
   },
   "bin": {
-    "fastify-openapi-typescript": "./lib/bin/cli.js"
+    "fastify-openapi-typescript": "./lib/bin/fastify-openapi-typescript.cli.js",
+    "fastify-openapi-route-configs": "./lib/bin/fastify-openapi-route-configs.cli.js"
   }
 }
