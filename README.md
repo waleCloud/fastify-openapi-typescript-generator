@@ -5,10 +5,6 @@ Particurarly generates routes handlers typed and can be used along with the [fas
 ## Installation
 `npm i @quinck/fastify-openapi-typescript-generator --save-dev`
 
-## Tests
-`npm run test`
-The tests are going to be implemented soon.
-
 ## Usage
 ```sh
 fastify-openapi-typescript --help
