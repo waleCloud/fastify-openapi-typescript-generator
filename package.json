@@ -54,9 +54,9 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "@quinck/openapi-typescript": "^6.2.1-2",
     "commander": "^10.0.1",
     "fastify-openapi-glue": "^4.1.4",
+    "openapi-typescript": "^6.2.8",
     "yaml": "^2.2.2"
   },
   "bin": {
