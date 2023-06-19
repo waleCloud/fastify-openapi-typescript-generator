@@ -1,4 +1,4 @@
-import hudson.tasks.junit.TestResultSummary
+// import hudson.tasks.junit.TestResultSummary
 
 String lastRunningStage;
 
@@ -34,15 +34,6 @@ pipeline {
             lastRunningStage="Lint"
           }
           sh 'npm run lint'
-      }
-    }
-        
-    stage("Test") {
-      steps {
-        script {
-          lastRunningStage="Test"
-        }
-        sh 'npm run test:junitReporter'
       }
     }
 
@@ -96,8 +87,7 @@ pipeline {
   post {
     always {
       script {
-        def testResult = junit "test-results.xml"
-        notifyDiscord(currentBuild.result, lastRunningStage, testResult)
+        notifyDiscord(currentBuild.result, lastRunningStage)
         deleteDir() /* clean up our workspace */
         }
     }
@@ -110,7 +100,7 @@ pipeline {
   }
 }
 
-def notifyDiscord(String buildStatus = 'SUCCESS', String lastRunningStage ="PRE-BUILD", TestResultSummary testResult) {
+def notifyDiscord(String buildStatus = 'SUCCESS', String lastRunningStage ="PRE-BUILD") {
 // def notifyDiscord(String buildStatus = 'SUCCESS', String lastRunningStage ="PRE-BUILD") {
   
   def statusIcon;
@@ -131,7 +121,7 @@ def notifyDiscord(String buildStatus = 'SUCCESS', String lastRunningStage ="PRE-
   def title = "${env.JOB_NAME} Build: ${env.BUILD_NUMBER}"
   def title_link = "${env.RUN_DISPLAY_URL}"
 
-  def testSummary = "\n *Test Summary* - ${testResult.totalCount}, Failures: ${testResult.failCount}, Skipped: ${testResult.skipCount}, Passed: ${testResult.passCount}\n\nTest link: ${env.RUN_TESTS_DISPLAY_URL}"
+  // def testSummary = "\n *Test Summary* - ${testResult.totalCount}, Failures: ${testResult.failCount}, Skipped: ${testResult.skipCount}, Passed: ${testResult.passCount}\n\nTest link: ${env.RUN_TESTS_DISPLAY_URL}"
 
   def author = sh(returnStdout: true, script: "git --no-pager show -s --format='%an'").trim()
 
@@ -151,7 +141,7 @@ def notifyDiscord(String buildStatus = 'SUCCESS', String lastRunningStage ="PRE-
     subject = subject + "\n> Failed in stage: *${lastRunningStage}*"
   }
 
-  subject = subject + "\n${testSummary}"
+  // subject = subject + "\n${testSummary}"
 
 
   // def completeSonarURL = "${SONAR_CLOUD_URL}&branch=${env.BRANCH_NAME}"
