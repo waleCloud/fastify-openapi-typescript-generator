@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "cli",
-        "dependencies"
+        "dependencies",
+        "route-configs"
     ]
 }
