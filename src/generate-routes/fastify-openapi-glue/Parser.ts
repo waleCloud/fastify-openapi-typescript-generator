@@ -5,8 +5,6 @@ import { ParserV3 } from './Parser.v3.js'
 export class Parser {
     private original: object | undefined
 
-    constructor() {}
-
     specification(): object | undefined {
         return this.original
     }
