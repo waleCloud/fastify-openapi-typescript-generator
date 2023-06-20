@@ -3,7 +3,11 @@ import path from 'path'
 import { disableLinter, fastifyRouteOptionsImports } from '../utils/consts.js'
 import { mkdirIfNotExists } from '../utils/fs.js'
 import { Parser } from './fastify-openapi-glue/Parser.js'
-import { configsFolder } from './generate-routes-options.consts.js'
+import {
+    allowedProperties,
+    commonTypesFileName,
+    configsFolder,
+} from './generate-routes-options.consts.js'
 import {
     RoutesOptionsGenerator,
     RoutesOptionsGeneratorFactory,
@@ -35,14 +39,14 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
                 const routeCfg = {
                     method: item.method,
                     url: item.url,
-                    schema: item.schema,
+                    schema: parseSchema(item.schema),
                     config: item.config,
                 }
 
                 const routesString = JSON.stringify(routeCfg, null, 2)
                 const fileContent = `${disableLinter}
 
-${fastifyRouteOptionsImports}
+import { GenericRouteOptions } from '../${commonTypesFileName}'
 
 export const ${item.operationId}: GenericRouteOptions =
 ${routesString}
@@ -53,6 +57,14 @@ ${routesString}
                 )
             })
             await Promise.all(routes)
+
+            await writeFile(
+                path.join(outputDirectory, `${commonTypesFileName}.ts`),
+                `${disableLinter}
+
+${fastifyRouteOptionsImports}
+`,
+            )
 
             await writeFile(
                 path.join(outputDirectory, 'index.ts'),
@@ -79,3 +91,9 @@ const getIndexFileContent = (routes: any[]) => {
 ${routesExports}
 `
 }
+
+const parseSchema = (schema: any) =>
+    allowedProperties.reduce((acc, prop) => {
+        if (prop in schema) acc[prop] = schema[prop]
+        return acc
+    }, {} as any)
