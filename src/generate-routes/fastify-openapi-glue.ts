@@ -3,6 +3,7 @@ import path from 'path'
 import { disableLinter, fastifyRouteOptionsImports } from '../utils/consts.js'
 import { mkdirIfNotExists } from '../utils/fs.js'
 import { Parser } from './fastify-openapi-glue/Parser.js'
+import { configsFolder } from './generate-routes-options.consts.js'
 import {
     RoutesOptionsGenerator,
     RoutesOptionsGeneratorFactory,
@@ -17,15 +18,19 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
     const generateRoutesOptions: RoutesOptionsGenerator['generateRoutesOptions'] =
         async operationIds => {
             await mkdirIfNotExists(outputDirectory)
+            const configsPath = path.join(outputDirectory, configsFolder)
+            await mkdirIfNotExists(configsPath)
 
             const parser = new Parser()
             const config = await parser.parse(openapi)
 
             let parsedRoutes = config.routes as any[]
+
             if (operationIds && operationIds.length > 0)
                 parsedRoutes = parsedRoutes.filter(item =>
                     operationIds.includes(item.operationId),
                 )
+
             const routes = parsedRoutes.map((item: any) => {
                 const routeCfg = {
                     method: item.method,
@@ -33,6 +38,7 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
                     schema: item.schema,
                     config: item.config,
                 }
+
                 const routesString = JSON.stringify(routeCfg, null, 2)
                 const fileContent = `${disableLinter}
 
@@ -42,12 +48,34 @@ export const ${item.operationId}: GenericRouteOptions =
 ${routesString}
             `
                 return writeFile(
-                    path.join(outputDirectory, `${item.operationId}.ts`),
+                    path.join(configsPath, `${item.operationId}.ts`),
                     fileContent,
                 )
             })
             await Promise.all(routes)
+
+            await writeFile(
+                path.join(outputDirectory, 'index.ts'),
+                getIndexFileContent(parsedRoutes),
+            )
         }
 
     return { generateRoutesOptions }
+}
+
+const getIndexFileContent = (routes: any[]) => {
+    const routesExports = routes
+        .map(
+            item =>
+                `export * from './${path.join(
+                    configsFolder,
+                    item.operationId,
+                )}'`,
+        )
+        .join('\n')
+
+    return `${disableLinter}
+
+${routesExports}
+`
 }
