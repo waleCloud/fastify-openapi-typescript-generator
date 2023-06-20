@@ -1,8 +1,8 @@
-import { getParser } from 'fastify-openapi-glue'
 import fs from 'fs'
 import path from 'path'
 import { disableLinter, fastifyRouteOptionsImports } from '../utils/consts.js'
 import { mkdirIfNotExists } from '../utils/fs.js'
+import { Parser } from './fastify-openapi-glue/Parser.js'
 import {
     RoutesOptionsGenerator,
     RoutesOptionsGeneratorFactory,
@@ -18,7 +18,7 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
         async operationIds => {
             await mkdirIfNotExists(outputDirectory)
 
-            const parser = getParser()
+            const parser = new Parser()
             const config = await parser.parse(openapi)
 
             let parsedRoutes = config.routes as any[]
