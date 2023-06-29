@@ -9,6 +9,7 @@ const { writeFile } = fs.promises
 export async function generateComponentsFromOpenapi(
     outputDirectory: string,
     openapiPath: string,
+    externalTypesImportFrom?: string,
 ): Promise<void> {
     await mkdirIfNotExists(outputDirectory)
 
@@ -16,7 +17,9 @@ export async function generateComponentsFromOpenapi(
         outputDirectory,
         openapiTypesFileName,
     )
-    const openapiTypes = await generateOpenapiTypes(openapiPath)
+    const openapiTypes = await generateOpenapiTypes(openapiPath, {
+        externalTypesImportFrom,
+    })
     await writeFile(openapiTypesOutputPath, openapiTypes)
 
     const handlersPath = path.join(outputDirectory, handlersFileName)
