@@ -54,8 +54,9 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "@quinck/collections": "0.0.7",
+    "@quinck/collections": "^0.3.0",
     "commander": "^9.4.0",
+    "fastify-openapi-glue": "4.1.4",
     "openapi-typescript-codegen": "^0.23.0",
     "yaml": "^2.2.2"
   },
