@@ -1,20 +1,20 @@
 import { OpenapiParser } from '../openapi-parser/openapi-parser'
 import { OpenapiReader } from '../openapi-reader/openapi-reader'
-import { OpenAPIVX, RouteTypeTag } from '../utils/types'
 import { methods } from '../utils/openapi'
+import { OpenAPIVX, RouteTypeTag } from '../utils/types'
+import {
+    disableLinter,
+    fastifyImports,
+    handlersInterfacePostfix,
+    handlersInterfacePrefix,
+    openapiSchemasImport,
+    openapiSchemasImportName,
+    routeTypeTags,
+} from './handlers-generator.constants'
 import {
     HandlerProperties,
     RouteGenericPropertyName,
 } from './handlers-generator.models'
-import {
-    disableLinter,
-    fastifyImports,
-    openapiSchemasImport,
-    handlersInterfacePrefix,
-    handlersInterfacePostfix,
-    routeTypeTags,
-    openapiSchemasImportName,
-} from './handlers-generator.constants'
 
 export class HandlersGenerator {
     constructor(
@@ -66,6 +66,8 @@ export class HandlersGenerator {
                 return 'Body'
             case RouteTypeTag.ReplyBody:
                 return 'Reply'
+            case RouteTypeTag.Headers:
+                return 'Headers'
         }
     }
 

@@ -1,7 +1,7 @@
-import { OpenapiManager } from '../openapi-manager.models'
+import '@quinck/collections'
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { AnyObjectType, RouteTypeTag } from '../../utils/types'
-import '@quinck/collections'
+import { OpenapiManager } from '../openapi-manager.models'
 import { defaultObject, nullObject } from './openapi-manager-v3_1.consts'
 
 export class OpenApiManagerV3_1
@@ -121,6 +121,12 @@ export class OpenApiManagerV3_1
                 )
                 const queryParamsSchemaName = `${operationId}${RouteTypeTag.QueryParams}`
                 result[queryParamsSchemaName] = queryParamsSchema
+
+                const headerParamsSchema = paramsToSchema(
+                    paramsByScope.get('header'),
+                )
+                const headerParamsSchemaName = `${operationId}${RouteTypeTag.Headers}`
+                result[headerParamsSchemaName] = headerParamsSchema
 
                 const bodySchemaName = `${operationId}${RouteTypeTag.RequestBody}`
                 result[bodySchemaName] = defaultObject
