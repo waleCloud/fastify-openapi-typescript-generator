@@ -11,20 +11,32 @@ The tests are going to be implemented soon.
 
 ## Usage
 ```sh
-openapi_generate --help
+fastify-openapi-typescript --help
 
-  Usage: openapi [options]
+Usage: fastify-openapi-typescript [options]
+
+CLI to generate openapi typscript types from openapi
 
 Options:
+  -V, --version         output the version number
   -i, --input <value>   OpenAPI specification path, can be both yaml or json (required)
   -o, --output <value>  Output directory (required)
   -h, --help            display help for command
-
-  Examples
-    $ openapi --input ./spec.json --output ./generated
-    $ openapi --input ./spec.yaml --output ./generated
 ```
 
+```sh
+fastify-openapi-route-configs --help
+
+Usage: fastify-openapi-route-configs [options]
+
+CLI to generate route configs from openapi
+
+Options:
+  -V, --version         output the version number
+  -i, --input <value>   OpenAPI specification path, can be both yaml or json (required)
+  -o, --output <value>  Output directory (required)
+  -h, --help            display help for command
+```
 
 ## Contact
 * Quinck: info@quinck.io

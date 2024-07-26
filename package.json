@@ -28,7 +28,10 @@
     "Generator",
     "Glue"
   ],
-  "author": "Quinck s.r.l.",
+  "author": {
+    "name": "Stefano Righini",
+    "email": "stefano.righini@quinck.io"
+  },
   "license": "ISC",
   "homepage": "https://bitbucket.org/Quinck/fastify-openapi-typescript-generator#readme",
   "devDependencies": {
@@ -62,5 +65,15 @@
   "bin": {
     "fastify-openapi-typescript": "./lib/bin/fastify-openapi-typescript.cli.js",
     "fastify-openapi-route-configs": "./lib/bin/fastify-openapi-route-configs.cli.js"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Quinck s.r.l.",
+      "email": "info@quinck.io"
+    },
+    {
+      "name": "Paolo Galeotti",
+      "email": "paolo.galeotti@quinck.io"
+    }
+  ]
 }
