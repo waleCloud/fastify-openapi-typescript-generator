@@ -1,4 +1,4 @@
-import { OpenAPIVX } from '../../utils/types'
+import { OpenAPIVX } from '../../utils/types.js'
 
 export type RoutesOptionsGeneratorParameters = {
     readonly openapi: OpenAPIVX | string

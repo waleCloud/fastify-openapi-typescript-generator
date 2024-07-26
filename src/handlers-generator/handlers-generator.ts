@@ -1,26 +1,24 @@
-import { OpenapiParser } from '../openapi-parser/openapi-parser'
-import { OpenapiReader } from '../openapi-reader/openapi-reader'
-import { methods } from '../utils/openapi'
-import { OpenAPIVX, RouteTypeTag } from '../utils/types'
+import { OpenapiParser } from '../openapi-parser/openapi-parser.js'
+import { OpenapiReader } from '../openapi-reader/openapi-reader.js'
+import { disableLinter } from '../utils/consts.js'
+import { methods } from '../utils/openapi.js'
+import { OpenAPIVX } from '../utils/types.js'
 import {
-    disableLinter,
     fastifyImports,
     handlersInterfacePostfix,
     handlersInterfacePrefix,
-    openapiSchemasImport,
-    openapiSchemasImportName,
-    routeTypeTags,
-} from './handlers-generator.constants'
-import {
-    HandlerProperties,
-    RouteGenericPropertyName,
-} from './handlers-generator.models'
+    openapiOperationsImport,
+    openapiOperationsImportName,
+    valueOfType,
+} from './handlers-generator.constants.js'
+import { HandlerProperties } from './handlers-generator.models.js'
 
 export class HandlersGenerator {
     constructor(
         private readonly openapiReader: OpenapiReader,
         private readonly openapiParser: OpenapiParser,
         private readonly openapiFilePath: string,
+        private readonly typesModule: string,
     ) {}
 
     generateHandlers(): string {
@@ -37,55 +35,30 @@ export class HandlersGenerator {
                 return `${documentation}\n\t${handler}`
             },
         )
+
         return this.formatHandlers(operations)
     }
 
     private createDocumentation(summary?: string): string {
-        if (
-            summary != undefined &&
-            summary != null &&
-            typeof summary == 'string'
-        )
+        if (typeof summary == 'string') {
             return `
   /**
    * ${summary}
    */`
+        }
 
         return ''
     }
 
-    private getRouteGenericProp(
-        routeComponentType: RouteTypeTag,
-    ): RouteGenericPropertyName {
-        switch (routeComponentType) {
-            case RouteTypeTag.PathParams:
-                return 'Params'
-            case RouteTypeTag.QueryParams:
-                return 'Querystring'
-            case RouteTypeTag.RequestBody:
-                return 'Body'
-            case RouteTypeTag.ReplyBody:
-                return 'Reply'
-            case RouteTypeTag.Headers:
-                return 'Headers'
-        }
-    }
-
     private getRouteGeneric(operationId: string): string {
-        const routeGenricDefinition = routeTypeTags
-            .map(tag => this.getRouteGenricDefinition(tag, operationId))
-            .join('\n')
-        return `{
-${routeGenricDefinition}
-    }`
-    }
-
-    private getRouteGenricDefinition(
-        tag: RouteTypeTag,
-        operationId: string,
-    ): string {
-        const routeProp = this.getRouteGenericProp(tag)
-        return `\t\t\t${routeProp}: ${openapiSchemasImportName}.${operationId}${tag}`
+        const routeGenricDefinition = `
+            Params: ${openapiOperationsImportName}['${operationId}']['parameters']['path']
+            Querystring: ${openapiOperationsImportName}['${operationId}']['parameters']['query']
+            Body: ${openapiOperationsImportName}['${operationId}']['requestBody']['content']['application/json']
+            Reply: ValueOf<${openapiOperationsImportName}['${operationId}']['responses']>['content']['application/json']
+            Headers: ${openapiOperationsImportName}['${operationId}']['parameters']['header']
+        `
+        return `{\n${routeGenricDefinition}\n\t}`
     }
 
     private getRouteGenericString(operationId: string): string {
@@ -102,14 +75,9 @@ ${routeGenricDefinition}
 
         return Object.values(openapi.paths).flatMap(path =>
             methods.flatMap(method => {
-                if (path != undefined) {
-                    if (method in path) {
-                        const operation = path[method]
-                        if (operation) {
-                            const { operationId, summary } = operation
-                            if (operationId) return { operationId, summary }
-                        }
-                    }
+                if (path && path[method]) {
+                    const { operationId, summary } = path[method]
+                    if (operationId) return { operationId, summary }
                 }
                 return []
             }),
@@ -117,14 +85,14 @@ ${routeGenricDefinition}
     }
 
     private formatHandlers(operations: string[]): string {
-        const operationsFormatted = operations.reduce(
-            (prev, curr) => `${prev}\n${curr}`,
-        )
+        const operationsFormatted = operations.join('\n')
 
         return `${disableLinter}
 
 ${fastifyImports}
-${openapiSchemasImport}
+${openapiOperationsImport(this.typesModule)}
+
+${valueOfType}
 
 
 ${handlersInterfacePrefix}

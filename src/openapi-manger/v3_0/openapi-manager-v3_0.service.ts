@@ -1,8 +1,8 @@
 import '@quinck/collections'
 import { OpenAPIV3 } from 'openapi-types'
-import { AnyObjectType, RouteTypeTag } from '../../utils/types'
-import { OpenapiManager } from '../openapi-manager.models'
-import { defaultObject, nullObject } from './openapi-manager-v3_0.consts'
+import { AnyObjectType, RouteTypeTag } from '../../utils/types.js'
+import { OpenapiManager } from '../openapi-manager.models.js'
+import { defaultObject, nullObject } from './openapi-manager-v3_0.consts.js'
 
 export class OpenApiManagerV3_0 implements OpenapiManager<OpenAPIV3.Document> {
     generateOpenapiWithRoutesSchemas(

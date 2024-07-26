@@ -1,11 +1,11 @@
-import { OpenApiManagerV3_1 } from '../openapi-manger/v3_1/openapi-manager-v3_1.service'
-import { OpenApiVersionVerifier } from '../openapi-version-verifier/openapi-version-verifier'
-import { OpenapiReader } from '../openapi-reader/openapi-reader'
-import { OpenAPIVX } from '../utils/types'
-import { OpenapiParser } from '../openapi-parser/openapi-parser'
-import { OpenapiManager } from '../openapi-manger/openapi-manager.models'
-import { OpenApiVersion } from '../openapi-version-verifier/openapi-version-verifier.models'
-import { OpenApiManagerV3_0 } from '../openapi-manger/v3_0/openapi-manager-v3_0.service'
+import { OpenapiManager } from '../openapi-manger/openapi-manager.models.js'
+import { OpenApiManagerV3_0 } from '../openapi-manger/v3_0/openapi-manager-v3_0.service.js'
+import { OpenApiManagerV3_1 } from '../openapi-manger/v3_1/openapi-manager-v3_1.service.js'
+import { OpenapiParser } from '../openapi-parser/openapi-parser.js'
+import { OpenapiReader } from '../openapi-reader/openapi-reader.js'
+import { OpenApiVersionVerifier } from '../openapi-version-verifier/openapi-version-verifier.js'
+import { OpenApiVersion } from '../openapi-version-verifier/openapi-version-verifier.models.js'
+import { OpenAPIVX } from '../utils/types.js'
 
 export class RoutesSchemasGenerator {
     constructor(

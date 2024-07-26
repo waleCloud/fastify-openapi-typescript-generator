@@ -1,5 +1,5 @@
-import { OpenAPIVX } from '../utils/types'
 import { generate as generateSchemas } from 'openapi-typescript-codegen'
+import { OpenAPIVX } from '../utils/types.js'
 
 export class SchemasGenerator {
     constructor(

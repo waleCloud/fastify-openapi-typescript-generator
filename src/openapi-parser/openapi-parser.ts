@@ -1,5 +1,5 @@
 import yaml from 'yaml'
-import { OpenAPIVX } from '../utils/types'
+import { OpenAPIVX } from '../utils/types.js'
 
 export class OpenapiParser {
     parseOpeanpi(openapiFileContent: string): OpenAPIVX {

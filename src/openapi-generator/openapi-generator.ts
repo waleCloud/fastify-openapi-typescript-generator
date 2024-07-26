@@ -1,47 +1,45 @@
+import openapiTS from '@quinck/openapi-typescript'
 import fs from 'fs'
 import path from 'path'
-import { HandlersGenerator } from '../handlers-generator/handlers-generator'
-import { OpenapiParser } from '../openapi-parser/openapi-parser'
-import { OpenapiReader } from '../openapi-reader/openapi-reader'
-import { OpenApiVersionVerifier } from '../openapi-version-verifier/openapi-version-verifier'
-import { RoutesSchemasGenerator } from '../routes-schemas-generator/routes-schemas-generator'
-import { SchemasGenerator } from '../schemas-generator/schemas-generator'
-import { handlersFileName } from './openapi-generator.consts'
+import { HandlersGenerator } from '../handlers-generator/handlers-generator.js'
+import { OpenapiParser } from '../openapi-parser/openapi-parser.js'
+import { OpenapiReader } from '../openapi-reader/openapi-reader.js'
+import {
+    handlersFileName,
+    openapiTypesFileName,
+    openapiTypesModule,
+} from './openapi-generator.consts.js'
+const { mkdir, writeFile } = fs.promises
 
-export type GenerateComponentsFromOpenapiParams = {
-    rootDir: string
-    openapiFileRelativePath: string
-    destinationFolderRelativePath: string
-}
+export async function generateComponentsFromOpenapi(
+    outputFolder: string,
+    openapiPath: string,
+): Promise<void> {
+    await mkdir(outputFolder, { recursive: true })
 
-export async function generateComponentsFromOpenapi({
-    rootDir,
-    openapiFileRelativePath,
-    destinationFolderRelativePath,
-}: GenerateComponentsFromOpenapiParams): Promise<void> {
-    const basFolder = path.join(rootDir, destinationFolderRelativePath)
+    // generate openapi types
+    const openapiTypesOutputPath = path.join(outputFolder, openapiTypesFileName)
+    const openapiTypes = await generateOpenapiTypes(openapiPath)
+    await writeFile(openapiTypesOutputPath, openapiTypes)
 
-    const openapiPath = path.join(rootDir, openapiFileRelativePath)
+    // generate openapi handlers
     const reader = new OpenapiReader()
     const parser = new OpenapiParser()
-    const versionVerifier = new OpenApiVersionVerifier()
-    const routesSchemasGenerator = new RoutesSchemasGenerator(
+
+    const handlersGenerator = new HandlersGenerator(
         reader,
         parser,
-        versionVerifier,
         openapiPath,
+        openapiTypesModule,
     )
-    const openapiWithRoutesSchemas =
-        routesSchemasGenerator.generateRoutesSchemas()
 
-    await new SchemasGenerator(
-        openapiWithRoutesSchemas,
-        basFolder,
-    ).generateSchemas()
-
-    const handlersGenerator = new HandlersGenerator(reader, parser, openapiPath)
-
-    const handlersPath = path.join(basFolder, handlersFileName)
+    const handlersPath = path.join(outputFolder, handlersFileName)
     const handlers = handlersGenerator.generateHandlers()
-    fs.writeFileSync(handlersPath, handlers)
+    await writeFile(handlersPath, handlers)
+}
+
+const generateOpenapiTypes = (openapiFilePath: string): Promise<string> => {
+    const localPath = new URL(openapiFilePath, import.meta.url)
+
+    return openapiTS(localPath)
 }

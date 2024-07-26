@@ -6,7 +6,7 @@ import fs from 'fs'
 import {
     RoutesOptionsGenerator,
     RoutesOptionsGeneratorFactory,
-} from './generate-routes-options.models'
+} from './generate-routes-options.models.js'
 
 type GeneratedRouteOptions = Pick<
     RouteOptions,

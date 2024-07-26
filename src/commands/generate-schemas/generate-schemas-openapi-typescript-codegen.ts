@@ -2,7 +2,7 @@ import { generate } from 'openapi-typescript-codegen'
 import {
     SchemasGenerator,
     SchemasGeneratorFactory,
-} from './generate-schemas.models'
+} from './generate-schemas.models.js'
 
 export const openapiTypescriptCodegen: SchemasGeneratorFactory = ({
     openapi,
