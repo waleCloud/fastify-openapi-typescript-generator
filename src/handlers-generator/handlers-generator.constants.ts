@@ -35,7 +35,7 @@ type Headers<Operation extends keyof ${openapiOperationsImportName}> =
         : unknown
 
 type Body<Operation extends keyof ${openapiOperationsImportName}> =
-    ${openapiOperationsImportName}[Operation] extends { requestBody?: { content: { 'application/json': unknown } } }
+    ${openapiOperationsImportName}[Operation] extends { requestBody: { content: { 'application/json': unknown } } }
         ? ${openapiOperationsImportName}[Operation]['requestBody']['content']['application/json']
         : unknown
 
