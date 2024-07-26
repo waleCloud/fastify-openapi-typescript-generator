@@ -2,12 +2,13 @@ import { getParser } from 'fastify-openapi-glue'
 import fs from 'fs'
 import path from 'path'
 import { disableLinter, fastifyRouteOptionsImports } from '../utils/consts.js'
+import { mkdirIfNotExists } from '../utils/fs.js'
 import {
     RoutesOptionsGenerator,
     RoutesOptionsGeneratorFactory,
 } from './generate-routes-options.models.js'
 
-const { mkdir, writeFile, stat } = fs.promises
+const { writeFile } = fs.promises
 
 export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
     openapi,
@@ -15,12 +16,10 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
 }) => {
     const generateRoutesOptions: RoutesOptionsGenerator['generateRoutesOptions'] =
         async operationIds => {
+            await mkdirIfNotExists(outputDirectory)
+
             const parser = getParser()
-
             const config = await parser.parse(openapi)
-
-            if (!(await stat(outputDirectory)).isDirectory())
-                await mkdir(outputDirectory, { recursive: true })
 
             let parsedRoutes = config.routes as any[]
             if (operationIds && operationIds.length > 0)

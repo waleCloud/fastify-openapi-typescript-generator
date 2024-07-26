@@ -7,8 +7,7 @@ import {
     handlersInterfacePrefix,
     methods,
     openapiOperationsImport,
-    openapiOperationsImportName,
-    valueOfType,
+    utilityTypesDefinition,
 } from './handlers-generator.constants.js'
 import { HandlerProperties } from './handlers-generator.models.js'
 
@@ -21,7 +20,7 @@ export async function generateHandlers(
 
     const operations = handlersProperties.map(({ operationId, summary }) => {
         const routeString = getRouteGenericString(operationId)
-        const handler = `${operationId}?: ${routeString}`
+        const handler = `${operationId}: ${routeString}`
         const documentation = createDocumentation(summary)
         return `${documentation}\n\t${handler}`
     })
@@ -42,11 +41,11 @@ function createDocumentation(summary?: string): string {
 
 function getRouteGeneric(operationId: string): string {
     const routeGenricDefinition = `
-            Params: ${openapiOperationsImportName}['${operationId}']['parameters']['path']
-            Querystring: ${openapiOperationsImportName}['${operationId}']['parameters']['query']
-            Body: ${openapiOperationsImportName}['${operationId}']['requestBody']['content']['application/json']
-            Reply: ValueOf<${openapiOperationsImportName}['${operationId}']['responses']>['content']['application/json']
-            Headers: ${openapiOperationsImportName}['${operationId}']['parameters']['header']
+            Params: Params<'${operationId}'>
+            Querystring: Querystring<'${operationId}'>
+            Body: Body<'${operationId}'>
+            Reply: Reply<'${operationId}'>
+            Headers: Headers<'${operationId}'>
         `
     return `{\n${routeGenricDefinition}\n\t}`
 }
@@ -81,7 +80,7 @@ function formatHandlers(operations: string[]): string {
 ${fastifyImports}
 ${openapiOperationsImport(openapiTypesModule)}
 
-${valueOfType}
+${utilityTypesDefinition}
 
 
 ${handlersInterfacePrefix}

@@ -3,14 +3,14 @@ import path from 'path'
 import { generateHandlers } from '../handlers-generator/handlers-generator.js'
 import { generateOpenapiTypes } from '../openapi-types/openapi-types.js'
 import { handlersFileName, openapiTypesFileName } from '../utils/consts.js'
-const { mkdir, writeFile, stat } = fs.promises
+import { mkdirIfNotExists } from '../utils/fs.js'
+const { writeFile } = fs.promises
 
 export async function generateComponentsFromOpenapi(
     outputDirectory: string,
     openapiPath: string,
 ): Promise<void> {
-    if (!(await stat(outputDirectory)).isDirectory())
-        await mkdir(outputDirectory, { recursive: true })
+    await mkdirIfNotExists(outputDirectory)
 
     const openapiTypesOutputPath = path.join(
         outputDirectory,
