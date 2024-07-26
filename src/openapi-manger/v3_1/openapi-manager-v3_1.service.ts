@@ -2,6 +2,7 @@ import { OpenapiManager } from '../openapi-manager.models'
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 import { AnyObjectType, RouteTypeTag } from '../../utils/types'
 import '@quinck/collections'
+import { defaultObject, nullObject } from './openapi-manager-v3_1.consts'
 
 export class OpenApiManagerV3_1
     implements OpenapiManager<OpenAPIV3_1.Document>
@@ -76,11 +77,6 @@ export class OpenApiManagerV3_1
                     ),
                 param => param as OpenAPIV3_1.ParameterObject,
             )
-        }
-
-        const defaultObject: OpenAPIV3_1.SchemaObject = {
-            type: 'object',
-            additionalProperties: false,
         }
 
         function paramsToSchema(
@@ -163,7 +159,7 @@ export class OpenApiManagerV3_1
                                     mediaObject => mediaObject.schema,
                                 )
                             }
-                            return []
+                            return [nullObject]
                         })
                         .singleCollect(
                             schema => schema != undefined,
