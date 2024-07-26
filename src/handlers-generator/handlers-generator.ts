@@ -72,10 +72,10 @@ export class HandlersGenerator {
     private getRouteGeneric(operationId: string): string {
         const routeGenricDefinition = routeTypeTags
             .map(tag => this.getRouteGenricDefinition(tag, operationId))
-            .join('\n\t\t\t')
+            .join('\n')
         return `{
-  ${routeGenricDefinition}
-}`
+${routeGenricDefinition}
+    }`
     }
 
     private getRouteGenricDefinition(
@@ -83,7 +83,7 @@ export class HandlersGenerator {
         operationId: string,
     ): string {
         const routeProp = this.getRouteGenericProp(tag)
-        return `${routeProp}: ${openapiSchemasImportName}.${operationId}${tag}`
+        return `\t\t${routeProp}: ${openapiSchemasImportName}.${operationId}${tag}`
     }
 
     private getRouteGenericString(operationId: string): string {
