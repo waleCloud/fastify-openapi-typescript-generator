@@ -19,7 +19,7 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
 
             const config = await parser.parse(openapi)
 
-            if ((await stat(outputDirectory)).isDirectory())
+            if (!(await stat(outputDirectory)).isDirectory())
                 await mkdir(outputDirectory, { recursive: true })
 
             let parsedRoutes = config.routes as any[]
