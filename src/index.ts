@@ -1,3 +1,2 @@
-export function helloWorld(): void {
-    console.log('Hello World!')
-}
+export * from './handlers-generator/handlers-generator'
+export * from './routes-schemas-generator/routes-schemas-generator'
