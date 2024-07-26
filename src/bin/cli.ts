@@ -2,11 +2,15 @@
 
 import { program } from 'commander'
 import path from 'path'
-import { DefaultCommandParamaters } from '../cli/commands/commands.models.js'
 import { generateComponentsFromOpenapi } from '../openapi-generator/openapi-generator.js'
 
+export type DefaultCommandParamaters = {
+    input: string
+    output: string
+}
+
 program
-    .name('openapi-first')
+    .name('fastify-openapi-typescript')
     .description('CLI to generate code from openapi')
     .version('1.0.0')
     .requiredOption(

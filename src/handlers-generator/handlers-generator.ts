@@ -1,96 +1,84 @@
-import { OpenapiParser } from '../openapi-parser/openapi-parser.js'
-import { OpenapiReader } from '../openapi-reader/openapi-reader.js'
-import { disableLinter } from '../utils/consts.js'
-import { methods } from '../utils/openapi.js'
+import { loadOpenapi } from '../openapi-loader/openapi-loader.js'
+import { disableLinter, openapiTypesModule } from '../utils/consts.js'
 import { OpenAPIVX } from '../utils/types.js'
 import {
     fastifyImports,
     handlersInterfacePostfix,
     handlersInterfacePrefix,
+    methods,
     openapiOperationsImport,
     openapiOperationsImportName,
     valueOfType,
 } from './handlers-generator.constants.js'
 import { HandlerProperties } from './handlers-generator.models.js'
 
-export class HandlersGenerator {
-    constructor(
-        private readonly openapiReader: OpenapiReader,
-        private readonly openapiParser: OpenapiParser,
-        private readonly openapiFilePath: string,
-        private readonly typesModule: string,
-    ) {}
+export async function generateHandlers(
+    openapiFilePath: string,
+): Promise<string> {
+    const openapi = await loadOpenapi(openapiFilePath)
 
-    generateHandlers(): string {
-        const openapiRaw = this.openapiReader.readOpenapi(this.openapiFilePath)
-        const openapi = this.openapiParser.parseOpeanpi(openapiRaw)
+    const handlersProperties = getHandlersProperties(openapi)
 
-        const handlersProperties = this.getHandlersProperties(openapi)
+    const operations = handlersProperties.map(({ operationId, summary }) => {
+        const routeString = getRouteGenericString(operationId)
+        const handler = `${operationId}?: ${routeString}`
+        const documentation = createDocumentation(summary)
+        return `${documentation}\n\t${handler}`
+    })
 
-        const operations = handlersProperties.map(
-            ({ operationId, summary }) => {
-                const routeString = this.getRouteGenericString(operationId)
-                const handler = `${operationId}?: ${routeString}`
-                const documentation = this.createDocumentation(summary)
-                return `${documentation}\n\t${handler}`
-            },
-        )
+    return formatHandlers(operations)
+}
 
-        return this.formatHandlers(operations)
-    }
-
-    private createDocumentation(summary?: string): string {
-        if (typeof summary == 'string') {
-            return `
+function createDocumentation(summary?: string): string {
+    if (typeof summary == 'string') {
+        return `
   /**
    * ${summary}
    */`
-        }
-
-        return ''
     }
 
-    private getRouteGeneric(operationId: string): string {
-        const routeGenricDefinition = `
+    return ''
+}
+
+function getRouteGeneric(operationId: string): string {
+    const routeGenricDefinition = `
             Params: ${openapiOperationsImportName}['${operationId}']['parameters']['path']
             Querystring: ${openapiOperationsImportName}['${operationId}']['parameters']['query']
             Body: ${openapiOperationsImportName}['${operationId}']['requestBody']['content']['application/json']
             Reply: ValueOf<${openapiOperationsImportName}['${operationId}']['responses']>['content']['application/json']
             Headers: ${openapiOperationsImportName}['${operationId}']['parameters']['header']
         `
-        return `{\n${routeGenricDefinition}\n\t}`
-    }
+    return `{\n${routeGenricDefinition}\n\t}`
+}
 
-    private getRouteGenericString(operationId: string): string {
-        return `RouteHandlerMethod<
+function getRouteGenericString(operationId: string): string {
+    return `RouteHandlerMethod<
     RawServerDefault,
     RawRequestDefaultExpression<RawServerDefault>,
     RawReplyDefaultExpression<RawServerDefault>,
-    ${this.getRouteGeneric(operationId)}
+    ${getRouteGeneric(operationId)}
   >`
-    }
+}
 
-    private getHandlersProperties(openapi: OpenAPIVX): HandlerProperties[] {
-        if (openapi.paths === undefined) return []
+function getHandlersProperties(openapi: OpenAPIVX): HandlerProperties[] {
+    return Object.values(openapi.paths ?? {}).flatMap(path =>
+        methods.flatMap(method => {
+            if (path && path[method]) {
+                const { operationId, summary } = path[method]
+                if (operationId) return { operationId, summary }
+            }
+            return []
+        }),
+    )
+}
 
-        return Object.values(openapi.paths).flatMap(path =>
-            methods.flatMap(method => {
-                if (path && path[method]) {
-                    const { operationId, summary } = path[method]
-                    if (operationId) return { operationId, summary }
-                }
-                return []
-            }),
-        )
-    }
+function formatHandlers(operations: string[]): string {
+    const operationsFormatted = operations.join('\n')
 
-    private formatHandlers(operations: string[]): string {
-        const operationsFormatted = operations.join('\n')
-
-        return `${disableLinter}
+    return `${disableLinter}
 
 ${fastifyImports}
-${openapiOperationsImport(this.typesModule)}
+${openapiOperationsImport(openapiTypesModule)}
 
 ${valueOfType}
 
@@ -99,5 +87,4 @@ ${handlersInterfacePrefix}
 ${operationsFormatted}
 ${handlersInterfacePostfix}
 `
-    }
 }
