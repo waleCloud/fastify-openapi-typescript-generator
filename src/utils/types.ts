@@ -4,6 +4,9 @@ export type OpenAPIVX = OpenAPIV3_1.Document | OpenAPIV3.Document
 
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 
+export type ArrayElement<ArrayType extends readonly unknown[]> =
+    ArrayType extends readonly (infer ElementType)[] ? ElementType : never
+
 export type PathWithOperationId = OpenAPIV3_1.OperationObject &
     Required<Pick<OpenAPIV3_1.OperationObject, 'operationId'>>
 
