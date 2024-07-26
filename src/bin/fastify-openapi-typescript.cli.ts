@@ -11,7 +11,7 @@ export type DefaultCommandParamaters = {
 
 program
     .name('fastify-openapi-typescript')
-    .description('CLI to generate code from openapi')
+    .description('CLI to generate openapi typscript types from openapi')
     .version('1.0.0')
     .requiredOption(
         '-i, --input <value>',
@@ -20,7 +20,7 @@ program
     .requiredOption('-o, --output <value>', 'Output directory (required)')
     .action(async options => {
         const { input, output } = options as DefaultCommandParamaters
-        const pwd = process.env.PWD
+        const pwd = process.cwd()
         await generateComponentsFromOpenapi(
             path.join(pwd, output),
             path.join(pwd, input),

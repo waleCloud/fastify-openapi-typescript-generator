@@ -64,7 +64,8 @@ function getHandlersProperties(openapi: OpenAPIVX): HandlerProperties[] {
     return Object.values(openapi.paths ?? {}).flatMap(path =>
         methods.flatMap(method => {
             if (path && path[method]) {
-                const { operationId, summary } = path[method]
+                const summary = path[method]?.summary
+                const operationId = path[method]?.operationId
                 if (operationId) return { operationId, summary }
             }
             return []
