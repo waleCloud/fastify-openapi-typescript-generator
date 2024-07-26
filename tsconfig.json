@@ -1,11 +1,9 @@
 {
+  "extends": "@tsconfig/node16",
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "NodeNext",
     "outDir": "./lib",
     "rootDir": "./src",
-    "moduleResolution": "nodenext",
-    "esModuleInterop": true
+    "module": "ES2020"
   },
   "include": ["src"],
   "exclude": ["node_modules"]

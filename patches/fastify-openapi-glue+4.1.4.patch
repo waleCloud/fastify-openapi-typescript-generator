@@ -1,0 +1,44 @@
+diff --git a/node_modules/fastify-openapi-glue/index.d.ts b/node_modules/fastify-openapi-glue/index.d.ts
+index 3629256..25740d9 100644
+--- a/node_modules/fastify-openapi-glue/index.d.ts
++++ b/node_modules/fastify-openapi-glue/index.d.ts
+@@ -1,6 +1,10 @@
+ /// <reference types="node" />
+ 
+-import { FastifyPluginAsync, FastifyRequest, FastifyReply } from "fastify";
++import { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
++import { Parser } from './lib/Parser.js';
++export { fastifyOpenapiGlue, getParser };
++
++declare const getParser: () => Parser;
+ 
+ type OperationResolver = (
+ 	operationId: string,
+@@ -19,4 +23,4 @@ export interface FastifyOpenapiGlueOptions {
+ declare const fastifyOpenapiGlue: FastifyPluginAsync<FastifyOpenapiGlueOptions>;
+ 
+ export default fastifyOpenapiGlue;
+-export { fastifyOpenapiGlue };
++
+diff --git a/node_modules/fastify-openapi-glue/index.js b/node_modules/fastify-openapi-glue/index.js
+index d29d793..64674b8 100644
+--- a/node_modules/fastify-openapi-glue/index.js
++++ b/node_modules/fastify-openapi-glue/index.js
+@@ -1,6 +1,9 @@
+ import fp from "fastify-plugin";
+ import { Parser } from "./lib/Parser.js";
+ import Security from "./lib/securityHandlers.js";
++export { fastifyOpenapiGlue, getParser };
++
++const getParser = () => new Parser()
+ 
+ function checkObject(obj, name) {
+ 	if (typeof obj === "object" && obj !== null) {
+@@ -126,7 +129,6 @@ const fastifyOpenapiGlue = fp(plugin, {
+ });
+ 
+ export default fastifyOpenapiGlue;
+-export { fastifyOpenapiGlue };
+ 
+ export const options = {
+ 	specification: "examples/petstore/petstore-swagger.v2.json",
