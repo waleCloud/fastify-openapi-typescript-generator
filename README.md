@@ -1,5 +1,5 @@
 # fastify-openapi-typescript-generator
-This is a fork from <https://github.com/quinck-io/fastify-openapi-typescript-generator>
+
 Contains utilities to generate fastify types from openapi definition for the fastify framework.
 Particurarly generates routes handlers typed and can be used along with the [fastify-openapi-glue](https://www.npmjs.com/package/fastify-openapi-glue) package.
 
@@ -34,3 +34,5 @@ Options:
   -o, --output <value>  Output directory (required)
   -h, --help            display help for command
 ```
+
+This is a fork from <https://github.com/quinck-io/fastify-openapi-typescript-generator>

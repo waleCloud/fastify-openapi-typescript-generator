@@ -1,6 +1,6 @@
 {
     "name": "@walecloud/fastify-openapi-typescript-generator",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Contains utilities to generate fastify types from openapi definition for the fastify framework.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -59,14 +59,6 @@
         "fastify-openapi-route-configs": "./lib/bin/fastify-openapi-route-configs.cli.js"
     },
     "contributors": [
-        {
-            "name": "Quinck s.r.l.",
-            "email": "info@quinck.io"
-        },
-        {
-            "name": "Paolo Galeotti",
-            "email": "paolo.galeotti@quinck.io"
-        },
         {
             "name": "Walecloud",
             "email": "walecloud@duck.com"
