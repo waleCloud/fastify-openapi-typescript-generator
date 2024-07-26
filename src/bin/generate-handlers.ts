@@ -7,7 +7,7 @@ import { OpenapiParser } from '../openapi-parser/openapi-parser'
 import { OpenapiReader } from '../openapi-reader/openapi-reader'
 import { OpenApiVersionVerifier } from '../openapi-version-verifier/openapi-version-verifier'
 import { RoutesSchemasGenerator } from '../routes-schemas-generator/routes-schemas-generator'
-import { generate as generateSchemas } from 'openapi-typescript-codegen'
+import { SchemasGenerator } from '../schemas-generator/schemas-generator'
 
 async function generate(): Promise<void> {
     const rootDir = process.env.PWD || ''
@@ -27,15 +27,13 @@ async function generate(): Promise<void> {
         versionVerifier,
         openapiPath,
     )
-    const result = routesSchemasGenerator.generateRoutesSchemas()
+    const openapiWithRoutesSchemas =
+        routesSchemasGenerator.generateRoutesSchemas()
 
-    await generateSchemas({
-        input: result,
-        output: basFolder,
-        exportCore: false,
-        exportServices: false,
-        exportSchemas: false,
-    })
+    await new SchemasGenerator(
+        openapiWithRoutesSchemas,
+        basFolder,
+    ).generateSchemas()
 
     const handlersGenerator = new HandlersGenerator(reader, parser, openapiPath)
 
