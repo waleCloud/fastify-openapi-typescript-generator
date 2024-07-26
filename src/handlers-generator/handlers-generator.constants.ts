@@ -20,22 +20,22 @@ export const utilityTypesDefinition = `
 type ValueOf<T> = T[keyof T]
 
 type Params<Operation extends keyof ${openapiOperationsImportName}> =
-    ${openapiOperationsImportName}[Operation] extends { parameters: { path: unknown } }
+    ${openapiOperationsImportName}[Operation] extends { parameters: { path?: unknown } }
         ? ${openapiOperationsImportName}[Operation]['parameters']['path']
         : unknown
 
 type Querystring<Operation extends keyof ${openapiOperationsImportName}> =
-    ${openapiOperationsImportName}[Operation] extends { parameters: { query: unknown } }
+    ${openapiOperationsImportName}[Operation] extends { parameters: { query?: unknown } }
         ? ${openapiOperationsImportName}[Operation]['parameters']['query']
         : unknown
 
 type Headers<Operation extends keyof ${openapiOperationsImportName}> =
-    ${openapiOperationsImportName}[Operation] extends { parameters: { header: unknown } }
+    ${openapiOperationsImportName}[Operation] extends { parameters: { header?: unknown } }
         ? ${openapiOperationsImportName}[Operation]['parameters']['header']
         : unknown
 
 type Body<Operation extends keyof ${openapiOperationsImportName}> =
-    ${openapiOperationsImportName}[Operation] extends { requestBody: { content: { 'application/json': unknown } } }
+    ${openapiOperationsImportName}[Operation] extends { requestBody?: { content: { 'application/json': unknown } } }
         ? ${openapiOperationsImportName}[Operation]['requestBody']['content']['application/json']
         : unknown
 
