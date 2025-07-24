@@ -1,4 +1,4 @@
-import openapiTS, { OpenAPITSOptions } from 'openapi-typescript'
+import openapiTS, { OpenAPITSOptions, astToString } from 'openapi-typescript'
 import { disableLinter } from '../utils/consts.js'
 
 export type OpenapiTypesOptions = {
@@ -7,7 +7,7 @@ export type OpenapiTypesOptions = {
 
 const schemaStartPath = '#/components/schemas/'
 
-export const generateOpenapiTypes = (
+export const generateOpenapiTypes = async (
     openapiFilePath: string,
     options?: OpenapiTypesOptions,
 ): Promise<string> => {
@@ -23,15 +23,16 @@ export const generateOpenapiTypes = (
         const externalTypesImport = 'openapiTypes'
 
         openAPITSOptions.transform = (_, options) => {
-            if (options.path.startsWith(schemaStartPath)) {
+            if (options.path?.startsWith(schemaStartPath)) {
                 const typeName = options.path.replace(schemaStartPath, '')
 
-                return `${externalTypesImport}.${typeName}`
+                return `${externalTypesImport}.${typeName}` as any
             }
             return undefined
         }
         openAPITSOptions.inject += `\nimport * as ${externalTypesImport} from "${externalTypesImportFrom}";\n`
     }
 
-    return openapiTS(localPath, openAPITSOptions)
+    const ast = await openapiTS(localPath, openAPITSOptions)
+    return astToString(ast)
 }
