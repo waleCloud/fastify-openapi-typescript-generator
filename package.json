@@ -1,6 +1,6 @@
 {
     "name": "@walecloud/fastify-openapi-typescript-generator",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Contains utilities to generate fastify types from openapi definition for the fastify framework.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
