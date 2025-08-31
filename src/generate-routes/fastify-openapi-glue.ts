@@ -38,7 +38,7 @@ export const fastifyOpenapiGlue: RoutesOptionsGeneratorFactory = ({
 
 ${fastifyRouteOptionsImports}
 
-export const ${item.operationId}: GenericRouteOptions =
+export const ${item.operationId}RouteConfig: GenericRouteOptions =
 ${routesString}
             `
                 return writeFile(
