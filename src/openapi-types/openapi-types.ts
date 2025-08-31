@@ -1,4 +1,5 @@
 import openapiTS, { OpenAPITSOptions } from 'openapi-typescript'
+import { disableLinter } from '../utils/consts.js'
 
 export type OpenapiTypesOptions = {
     externalTypesImportFrom?: string
@@ -14,7 +15,9 @@ export const generateOpenapiTypes = (
 
     const { externalTypesImportFrom } = options ?? {}
 
-    const openAPITSOptions: OpenAPITSOptions = {}
+    const openAPITSOptions: OpenAPITSOptions = {
+        inject: disableLinter,
+    }
 
     if (externalTypesImportFrom) {
         const externalTypesImport = 'openapiTypes'
@@ -27,7 +30,7 @@ export const generateOpenapiTypes = (
             }
             return undefined
         }
-        openAPITSOptions.inject = `import * as ${externalTypesImport} from "${externalTypesImportFrom}";`
+        openAPITSOptions.inject += `\nimport * as ${externalTypesImport} from "${externalTypesImportFrom}";\n`
     }
 
     return openapiTS(localPath, openAPITSOptions)
