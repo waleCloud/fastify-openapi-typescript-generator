@@ -7,6 +7,7 @@ import { generateComponentsFromOpenapi } from '../openapi-generator/openapi-gene
 export type DefaultCommandParamaters = {
     input: string
     output: string
+    externalTypesImportFrom?: string
 }
 
 program
@@ -18,13 +19,20 @@ program
         'OpenAPI specification path, can be both yaml or json (required)',
     )
     .requiredOption('-o, --output <value>', 'Output directory (required)')
+    .option(
+        '--externalTypesImportFrom <value>',
+        'External types import from a specific lib (optional)',
+    )
     .action(async options => {
-        const { input, output } = options as DefaultCommandParamaters
+        const { input, output, externalTypesImportFrom } =
+            options as DefaultCommandParamaters
+
         const pwd = process.cwd()
-        console.log(pwd)
+
         await generateComponentsFromOpenapi(
             path.join(pwd, output),
             path.join(pwd, input),
+            externalTypesImportFrom,
         )
     })
     .parse(process.argv)
